@@ -16,7 +16,10 @@ negFiles = glob.glob(negPath + "*.txt")
 # Step 2: Automatically read the whole file and convert them into a form that
 # can be trainable (bag of words)
 # ex: ["hello": 1, "my": 2 ...] where 1 & 2 is frequency of the word "hello" & "my"
-bagOfWords = []
+posBagOfWords = []
+negBagOfWords = []
+
+# positive reviews
 
 for filePath in posFiles:
     with open(filePath, 'r') as file:
@@ -36,13 +39,43 @@ for filePath in posFiles:
             count += 1
             freq[no_newLine] += 1
 
-        # add dictionaries to list
+        # delete empty string
         del freq['']
+        # add dictionaries to list
         bagOfWords.append(freq)
 
     file.close()
 
-print(bagOfWords)
+
+# negative reviews
+
+for filePath in negFiles:
+    with open(filePath, 'r') as file:
+        content = file.read().split()
+
+        freq = {}
+        for word in content:
+            # to lower case
+            lower_content = word.lower()
+            # remove punctuation
+            no_punct = lower_content.translate(
+                str.maketrans('', '', string.punctuation))
+            # remove '\n' from string
+            no_newLine = no_punct.replace('\n', '')
+            # count frequency of words
+            count = freq.setdefault(no_newLine, 0)
+            count += 1
+            freq[no_newLine] += 1
+
+        # delete emtpy string
+        del freq['']
+        # add dictionaries to list
+        bagOfWords.append(freq)
+
+    file.close()
+
+print(posBagOfWords)
+print(negBagOfWords)
 
 # Step 3: Calculate features which has highest P(feature | pos) and P(feature | neg)
 # Print out top 5 (Assignment 4B)

@@ -9,7 +9,7 @@ inputPath = sys.argv[1]
 posPath = inputPath + "/pos/"
 negPath = inputPath + "/neg/"
 
-posFiles = glob.glob(posPath + "*.txt") # pattern matching files with .txt 
+posFiles = glob.glob(posPath + "*.txt")  # pattern matching files with .txt
 negFiles = glob.glob(negPath + "*.txt")
 
 
@@ -27,7 +27,8 @@ for filePath in posFiles:
             # to lower case
             lower_content = word.lower()
             # remove punctuation
-            no_punct = lower_content.translate(str.maketrans('','',string.punctuation))
+            no_punct = lower_content.translate(
+                str.maketrans('', '', string.punctuation))
             # remove '\n' from string
             no_newLine = no_punct.replace('\n', '')
             # count frequency of words
@@ -36,6 +37,7 @@ for filePath in posFiles:
             freq[no_newLine] += 1
 
         # add dictionaries to list
+        del freq['']
         bagOfWords.append(freq)
 
     file.close()

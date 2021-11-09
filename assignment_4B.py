@@ -42,7 +42,7 @@ for filePath in posFiles:
         # delete empty string
         del freq['']
         # add dictionaries to list
-        bagOfWords.append(freq)
+        posBagOfWords.append(freq)
 
     file.close()
 
@@ -70,7 +70,7 @@ for filePath in negFiles:
         # delete emtpy string
         del freq['']
         # add dictionaries to list
-        bagOfWords.append(freq)
+        negBagOfWords.append(freq)
 
     file.close()
 

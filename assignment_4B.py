@@ -35,11 +35,9 @@ for filePath in posFiles:
             count += 1
             freq[no_newLine] += 1
 
-        # convert dictionary to list
-        word_list = list(freq.items())
-        # append frequency count and word to bagOfWords
-        for key, value in word_list:
-            bagOfWords.append([key, value])
+        # add dictionaries to list
+        bagOfWords.append(freq)
+
     file.close()
 
 print(bagOfWords)

@@ -77,6 +77,10 @@ for filePath in negFiles:
 print(posBagOfWords)
 print(negBagOfWords)
 
+totalPos = []
+totalNeg = []
+totalRev = []
+
 # Step 3: Calculate features which has highest P(feature | pos) and P(feature | neg)
 # Print out top 5 (Assignment 4B)
 

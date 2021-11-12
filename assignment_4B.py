@@ -2,6 +2,7 @@ import sys
 import glob
 import string
 import collections
+import numpy as np
 
 # Step 1: Create a command argument that allows passing path of the directory as input
 # example: python3 filename <inputPath>
@@ -10,7 +11,7 @@ inputPath = sys.argv[1]
 posPath = inputPath + "/pos/"
 negPath = inputPath + "/neg/"
 
-posFiles = glob.glob(posPath + "*.txt") # pattern matching files with .txt 
+posFiles = glob.glob(posPath + "*.txt")  # pattern matching files with .txt
 negFiles = glob.glob(negPath + "*.txt")
 
 
@@ -21,7 +22,7 @@ negFiles = glob.glob(negPath + "*.txt")
 posBagOfWords = []
 negBagOfWords = []
 
-counterBag = collections.Counter({}) # used for calculation
+counterBag = collections.Counter({})  # used for calculation
 posCounterBag = collections.Counter({})
 negCounterBag = collections.Counter({})
 
@@ -29,11 +30,12 @@ negCounterBag = collections.Counter({})
 for filePath in posFiles:
     with open(filePath, 'r') as file:
         content = file.read()
-        lower_content = content.lower() # to lower case
+        lower_content = content.lower()  # to lower case
         # remove punctuation
-        no_punct = lower_content.translate(str.maketrans('','',string.punctuation))
+        no_punct = lower_content.translate(
+            str.maketrans('', '', string.punctuation))
         # remove '\n' from string
-        no_newLine = no_punct.replace('\n', '');
+        no_newLine = no_punct.replace('\n', '')
         # split the content into words
         final_content = no_newLine.split(' ')
         # remove empty string in the content
@@ -45,20 +47,19 @@ for filePath in posFiles:
         # add to counterBag and posAllWords
         counterBag += counter
         posCounterBag += counter
-        
+
     file.close()
-
-
 
 
 for filePath in negFiles:
     with open(filePath, 'r') as file:
         content = file.read()
-        lower_content = content.lower() # to lower case
+        lower_content = content.lower()  # to lower case
         # remove punctuation
-        no_punct = lower_content.translate(str.maketrans('','',string.punctuation))
+        no_punct = lower_content.translate(
+            str.maketrans('', '', string.punctuation))
         # remove '\n' from string
-        no_newLine = no_punct.replace('\n', '');
+        no_newLine = no_punct.replace('\n', '')
         # split the content into words
         final_content = no_newLine.split(' ')
         # remove empty string in the content
@@ -72,22 +73,77 @@ for filePath in negFiles:
         negCounterBag += counter
 
     file.close()
-    
+
 revAllWords = counterBag.keys()
 
-#print(posBagOfWords)
-#print(negBagOfWords)
-#print(counterBag)
+# print(posBagOfWords)
+# print(negBagOfWords)
+# print(counterBag)
 print("PosCounterBag is :", posCounterBag)
 print("NegCounterBag is :", negCounterBag)
 print(revAllWords)
 
 
-
-
-
 # Step 3: Calculate features which has highest P(feature | pos) and P(feature | neg)
 # Print out top 5 (Assignment 4B)
+
+# combines all the dictionaries in the list
+posAllWords = dict(posCounterBag)
+negAllWords = dict(negCounterBag)
+
+posLength = len(posBagOfWords)                        # should be 800
+negLength = len(negBagOfWords)                        # should be 800
+totalLength = len(posBagOfWords+negBagOfWords)        # should be 1600
+
+listOfPosIndicator = {}
+for i in revAllWords:
+    if i in posAllWords:
+        if i in negAllWords:
+            negCount = negAllWords[i]
+        else:
+            negCount = 0
+        posCount = posAllWords[i]
+        totalCount = posCount + negCount
+        posIndicator = np.log2(
+            (posCount * totalLength) / (totalCount * posLength))
+    else:
+        posIndicator = 0
+    if posCount != 1 and negCount != 0:
+        listOfPosIndicator[i] = posIndicator
+
+listOfNegIndicator = {}
+for i in revAllWords:
+    if i in negAllWords:
+        if i in posAllWords:
+            posCount = posAllWords[i]
+        else:
+            posCount = 0
+        negCount = negAllWords[i]
+        totalCount = posCount + negCount
+        negIndicator = np.log2(
+            (negCount * totalLength) / (totalCount * negLength))
+    else:
+        negIndicator = 0
+    if negCount != 1 and posCount != 0:
+        listOfNegIndicator[i] = negIndicator
+
+sorted(listOfPosIndicator)
+sorted(listOfNegIndicator)
+
+#usefulnessIndicator = {}
+# for i in revAllWords:
+#useful = abs(listOfPosIndicator[i] - listOfNegIndicator[i])
+#usefulnessIndicator[i] = useful
+
+max_key_pos = max(listOfPosIndicator, key=listOfPosIndicator.get)
+max_key_neg = max(listOfNegIndicator, key=listOfNegIndicator.get)
+#max_key_use = max(usefulnessIndicator, key=usefulnessIndicator.get)
+
+print(max_key_pos)
+print(listOfPosIndicator[max_key_pos])
+print(max_key_neg)
+print(listOfNegIndicator[max_key_neg])
+# print(max_key_use)
 
 # Step 4: Selecting features
 # calculate the usefuleness of each word using the formula on slide 18 p11-12

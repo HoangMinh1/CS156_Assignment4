@@ -40,6 +40,8 @@ for filePath in posFiles:
         final_content = no_newLine.split(' ')
         # remove empty string in the content
         final_content = list(filter(None, final_content))
+        # remove duplicate
+        final_content = list(set(final_content))
         # add final result
         posBagOfWords.append(final_content)
         # create a Counter
@@ -64,6 +66,8 @@ for filePath in negFiles:
         final_content = no_newLine.split(' ')
         # remove empty string in the content
         final_content = list(filter(None, final_content))
+        # remove duplicate
+        final_content = list(set(final_content))
         # add final result
         negBagOfWords.append(final_content)
         # create a Counter

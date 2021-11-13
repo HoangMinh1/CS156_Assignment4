@@ -80,14 +80,6 @@ for filePath in negFiles:
 
 revAllWords = counterBag.keys()
 
-# print(posBagOfWords)
-# print(negBagOfWords)
-# print(counterBag)
-#print("PosCounterBag is :", posCounterBag)
-#print("NegCounterBag is :", negCounterBag)
-# print(revAllWords)
-
-
 # Step 3: Calculate features which has highest P(feature | pos) and P(feature | neg)
 # Print out top 5 (Assignment 4B)
 
@@ -131,17 +123,10 @@ for i in revAllWords:
     if negCount != 1 and posCount != 0:
         listOfNegIndicator[i] = negIndicator
 
-# sorted(listOfPosIndicator)
-# sorted(listOfNegIndicator)
-
 #usefulnessIndicator = {}
 # for i in revAllWords:
 #useful = abs(listOfPosIndicator[i] - listOfNegIndicator[i])
 #usefulnessIndicator[i] = useful
-
-#max_key_pos = max(listOfPosIndicator, key=listOfPosIndicator.get)
-#max_key_neg = max(listOfNegIndicator, key=listOfNegIndicator.get)
-#max_key_use = max(usefulnessIndicator, key=usefulnessIndicator.get)
 
 print("Top 5 Positive:")
 most_pos = dict(collections.Counter(listOfPosIndicator).most_common(5))
@@ -152,12 +137,6 @@ print("Top 5 Negative:")
 most_neg = dict(collections.Counter(listOfNegIndicator).most_common(5))
 for i in most_neg:
     print(i, most_neg[i])
-
-# print(max_key_pos)
-# print(listOfPosIndicator[max_key_pos])
-# print(max_key_neg)
-# print(listOfNegIndicator[max_key_neg])
-# print(max_key_use)
 
 # Step 4: Selecting features
 # calculate the usefuleness of each word using the formula on slide 18 p11-12

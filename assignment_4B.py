@@ -128,15 +128,18 @@ for i in revAllWords:
 #useful = abs(listOfPosIndicator[i] - listOfNegIndicator[i])
 #usefulnessIndicator[i] = useful
 
-print("Top 5 Positive:")
-most_pos = dict(collections.Counter(listOfPosIndicator).most_common(5))
-for i in most_pos:
-    print(i, most_pos[i])
+# print to text file
+with open("Output.txt", "w") as file:
+    most_pos = dict(collections.Counter(listOfPosIndicator).most_common(5))
+    file.write("Top 5 Positive: \n")
+    for i in most_pos:
+        file.write(" {0} {1}\n".format(i, most_pos[i]))
 
-print("Top 5 Negative:")
-most_neg = dict(collections.Counter(listOfNegIndicator).most_common(5))
-for i in most_neg:
-    print(i, most_neg[i])
+    file.write("Top 5 Negative: \n")
+    most_neg = dict(collections.Counter(listOfNegIndicator).most_common(5))
+    for i in most_neg:
+        file.write(" {0} {1}\n".format(i, most_neg[i]))
+file.close()
 
 # Step 4: Selecting features
 # calculate the usefuleness of each word using the formula on slide 18 p11-12

@@ -1,3 +1,15 @@
+''' 
+Assignment 4B for CS 156
+@authors: Hoang Nguyen, David Truong, Brooke Dalton
+
+To run program please input two arguments that are the positive and negative files
+Ex: python3 assignment_4B.py data/pos/ data/neg/
+
+The output should be a .txt file called "Output.txt" that contains the top 5 positive 
+and top 5 negative evidences
+
+'''
+
 import sys
 import glob
 import string

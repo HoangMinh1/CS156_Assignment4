@@ -15,16 +15,24 @@ import glob
 import string
 import collections
 import numpy as np
+import random
 
-# Step 1: Create a command argument that allows passing path of the directory as input
-# example: python3 filename <inputPath>
-inputPath = sys.argv[1]
+# Step 1: Create a command argument that allows passing paths of the pos and neg directories as input
+# example: python3 filename <posPath> <negPath>
 
-posPath = inputPath + "/pos/"
-negPath = inputPath + "/neg/"
+posPath = sys.argv[1] # positive reviews path
+negPath = sys.argv[2] # negative reviews path
 
 posFiles = glob.glob(posPath + "*.txt")  # pattern matching files with .txt
 negFiles = glob.glob(negPath + "*.txt")
+
+ratio = 0.9 # split 90/10
+
+trainingPos = random.sample(posFiles, int(ratio * len(posFiles))) # split into training data
+trainingNeg = random.sample(negFiles, int(ratio * len(negFiles)))
+
+testPost = list(set(posFiles) - set(trainingPos)) # get the differences btw posFile and training to make test data
+testNeg = list(set(negFiles) - set(trainingNeg))
 
 
 # Step 2: Automatically read the whole file and convert them into a form that
@@ -39,7 +47,7 @@ posCounterBag = collections.Counter({})
 negCounterBag = collections.Counter({})
 
 
-for filePath in posFiles:
+for filePath in trainingPos:
     with open(filePath, 'r') as file:
         content = file.read()
         lower_content = content.lower()  # to lower case
@@ -65,7 +73,7 @@ for filePath in posFiles:
     file.close()
 
 
-for filePath in negFiles:
+for filePath in trainingNeg:
     with open(filePath, 'r') as file:
         content = file.read()
         lower_content = content.lower()  # to lower case
@@ -92,7 +100,7 @@ for filePath in negFiles:
 
 revAllWords = counterBag.keys()
 
-# Step 3: Calculate features which has highest P(feature | pos) and P(feature | neg)
+# Step 3: Calculate features which has highest I(feature | pos) and I(feature | neg)
 # Print out top 5 (Assignment 4B)
 
 # combines all the dictionaries in the list
@@ -152,10 +160,3 @@ with open("Output.txt", "w") as file:
     for i in most_neg:
         file.write(" {0} {1}\n".format(i, most_neg[i]))
 file.close()
-
-# Step 4: Selecting features
-# calculate the usefuleness of each word using the formula on slide 18 p11-12
-# Select the data which have the highest features
-
-
-# Step 5: Write a Bayes classification

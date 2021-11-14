@@ -5,8 +5,7 @@ Assignment 4B for CS 156
 To run program please input two arguments that are the positive and negative files
 Ex: python3 assignment_4B.py data/pos/ data/neg/
 
-The output should be a .txt file called "Output.txt" that contains the top 5 positive 
-and top 5 negative evidences
+The output should be a .txt file called "Output.txt" that is created when the python file is ran
 
 '''
 

@@ -26,7 +26,7 @@ negPath = sys.argv[2] # negative reviews path
 posFiles = glob.glob(posPath + "*.txt")  # pattern matching files with .txt
 negFiles = glob.glob(negPath + "*.txt")
 
-ratio = 0.9 # split 90/10
+ratio = 0.85 # ratio for spliting 85/15
 
 trainingPos = random.sample(posFiles, int(ratio * len(posFiles))) # split into training data
 trainingNeg = random.sample(negFiles, int(ratio * len(negFiles)))
